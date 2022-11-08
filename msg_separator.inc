@@ -2,20 +2,20 @@
     #define MSGSeparator_INC_
 #endif
 
-native SendClientMessageSeparate(playerid, color, const message[], mode = 0);
-native SendClientMessageSeparateEx(playerid, color, const message[], mode = 0, separator = ' ');
+native SendClientMessageSeparate(playerid, color, const message[], mode = 0, MaxLen = 144);
+native SendClientMessageSeparateEx(playerid, color, const message[], mode = 0, MaxLen = 144, separator = ' ');
 
-#if !defined MSGSeparator_Separate_DISABLE
+#if !defined SEPARATE_METHOD_DISABLE
 
-    #if !defined MSGSeparator_Separate_AS_IS
+    #if !defined SEPARATE_METHOD_AS_IS
 
-        #if !defined MSGSeparator_Separate_GAP
+        #if !defined SEPARATE_METHOD_GAP
 
-            #if !defined MSGSeparator_Separate_CHAR_MOD0
+            #if !defined SEPARATE_METHOD_CHAR_MOD_0
 
-                #if !defined MSGSeparator_Separate_CHAR_MOD1
+                #if !defined SEPARATE_METHOD_CHAR_MOD_1
 
-                    #define MSGSeparator_Separate_CHAR_MOD1
+                    #define SEPARATE_METHOD_CHAR_MOD_1
 
                 #endif
             #endif
@@ -23,10 +23,10 @@ native SendClientMessageSeparateEx(playerid, color, const message[], mode = 0, s
     #endif
 #endif
 
-#if defined MSGSeparator_Separate_AS_IS
+#if defined SEPARATE_METHOD_AS_IS
     stock MSGSeparator_SendClientMessage(playerid, color, const message[])
     {
-        return SendClientMessageSeparate(playerid, color, message, 0);
+        return SendClientMessageSeparate(playerid, color, message);
     }
     #if defined _ALS_SendClientMessage
 	    #undef SendClientMessage
@@ -36,7 +36,7 @@ native SendClientMessageSeparateEx(playerid, color, const message[], mode = 0, s
     #define SendClientMessage MSGSeparator_SendClientMessage
 #endif
 
-#if defined MSGSeparator_Separate_GAP
+#if defined SEPARATE_METHOD_GAP
     stock MSGSeparator_SendClientMessage(playerid, color, const message[])
     {
         return SendClientMessageSeparate(playerid, color, message, 1);
@@ -49,10 +49,10 @@ native SendClientMessageSeparateEx(playerid, color, const message[], mode = 0, s
     #define SendClientMessage MSGSeparator_SendClientMessage
 #endif
 
-#if defined MSGSeparator_Separate_CHAR_MOD0
+#if defined SEPARATE_METHOD_CHAR_MOD_0
     stock MSGSeparator_SendClientMessage(playerid, color, const message[])
     {
-        return SendClientMessageSeparateEx(playerid, color, message, 0, ' ');
+        return SendClientMessageSeparateEx(playerid, color, message);
     }
     #if defined _ALS_SendClientMessage
 	    #undef SendClientMessage
@@ -62,10 +62,10 @@ native SendClientMessageSeparateEx(playerid, color, const message[], mode = 0, s
     #define SendClientMessage MSGSeparator_SendClientMessage
 #endif
 
-#if defined MSGSeparator_Separate_CHAR_MOD1
+#if defined SEPARATE_METHOD_CHAR_MOD_1
     stock MSGSeparator_SendClientMessage(playerid, color, const message[])
     {
-        return SendClientMessageSeparateEx(playerid, color, message, 1, ' ');
+        return SendClientMessageSeparateEx(playerid, color, message, 1);
     }
     #if defined _ALS_SendClientMessage
 	    #undef SendClientMessage

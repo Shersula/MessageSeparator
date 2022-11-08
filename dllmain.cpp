@@ -21,37 +21,15 @@ PLUGIN_EXPORT void PLUGIN_CALL Unload()
 
 cell AMX_NATIVE_CALL SendClientMessageSeparate(AMX* amx, cell* params)
 {
-    if (params[0] / sizeof(cell) != 4)
+    if (params[0] / sizeof(cell) != 5)
     {
-        sampgdk::logprintf("SendClientMessageSeparate incorrect number of parameter(s). Expected: 4 Received: %d", params[0]/sizeof(cell));
+        sampgdk::logprintf("SendClientMessageSeparate incorrect number of parameter(s). Expected: 5 Received: %d", params[0]/sizeof(cell));
         return 1;
     }
 
-    int len;
-    cell* address;
-    amx_GetAddr(amx, params[3], &address);
-    amx_StrLen(address, &len);
-    char* Message = nullptr;
-    if (len)
+    if (params[5] > 144 || params[5] <= 3)
     {
-        len++;
-        Message = new char[len];
-        amx_GetString(Message, address, 0, len);
-
-        Separator PrepareMSG(Message, params[4]);
-
-        for (std::string i : PrepareMSG.getMessageQueue()) SendClientMessage(params[1], params[2], i.c_str());
-
-        delete[] Message;
-    }
-    return 1;
-}
-
-cell AMX_NATIVE_CALL SendClientMessageSeparateEx(AMX* amx, cell* params)
-{
-    if (params[0] / sizeof(cell) != 5)
-    {
-        sampgdk::logprintf("SendClientMessageSeparateEx incorrect number of parameters. Expected: 5 Received: %d", params[0]/sizeof(cell));
+        sampgdk::logprintf("SendClientMessageSeparate maximum length cannot be more than 144 and less than 4 characters. Specified: %d", params[5]);
         return 1;
     }
 
@@ -68,7 +46,41 @@ cell AMX_NATIVE_CALL SendClientMessageSeparateEx(AMX* amx, cell* params)
 
         Separator PrepareMSG(Message, params[4], params[5]);
 
-        for (std::string i : PrepareMSG.getMessageQueue()) SendClientMessage(params[1], params[2], i.c_str());
+        for (const std::string& i : PrepareMSG.getMessageQueue()) SendClientMessage(params[1], params[2], i.c_str());
+
+        delete[] Message;
+    }
+    return 1;
+}
+
+cell AMX_NATIVE_CALL SendClientMessageSeparateEx(AMX* amx, cell* params)
+{
+    if (params[0] / sizeof(cell) != 6)
+    {
+        sampgdk::logprintf("SendClientMessageSeparateEx incorrect number of parameters. Expected: 6 Received: %d", params[0]/sizeof(cell));
+        return 1;
+    }
+
+    if (params[5] > 144 || params[5] <= 3)
+    {
+        sampgdk::logprintf("SendClientMessageSeparateEx maximum length cannot be more than 144 and less than 4 characters. Specified: %d", params[5]);
+        return 1;
+    }
+
+    int len;
+    cell* address;
+    amx_GetAddr(amx, params[3], &address);
+    amx_StrLen(address, &len);
+    char* Message = nullptr;
+    if (len)
+    {
+        len++;
+        Message = new char[len];
+        amx_GetString(Message, address, 0, len);
+
+        Separator PrepareMSG(Message, params[4], params[5], params[6]);
+
+        for (const std::string &i : PrepareMSG.getMessageQueue()) SendClientMessage(params[1], params[2], i.c_str());
 
         delete[] Message;
     }
