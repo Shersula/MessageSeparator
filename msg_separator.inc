@@ -4,6 +4,7 @@
 
 native SendClientMessageSeparate(playerid, color, const message[], mode = 0, MaxLen = 144);
 native SendClientMessageSeparateEx(playerid, color, const message[], mode = 0, MaxLen = 144, separator = ' ');
+native SendClientMessageSeparateExEx(playerid, color, const message[], MaxLen = 144, separator = ' ', const GapStr[] = "...", bool:AlwaysAddGapStr = false);
 
 #if !defined SEPARATE_METHOD_DISABLE
 
